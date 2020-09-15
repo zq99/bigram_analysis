@@ -14,7 +14,7 @@ log = logging.getLogger("bigram analysis")
 logging.basicConfig(level=logging.INFO)
 
 
-class BigramPosition:
+class Bigram:
     def __init__(self, bigram, position):
         self.bigram = bigram
         self.position = position
@@ -68,11 +68,11 @@ def generate_bigram_analysis():
         word = str(row[1].values[0])
         for n in range(0, len(word) - 1):
             bigram = word[n:n + 2]
-            word_position = BigramPosition(n + 1, bigram)
-            if word_position not in unique:
-                unique[word_position] = 1
+            bigram_object = Bigram(n + 1, bigram)
+            if bigram_object not in unique:
+                unique[bigram_object] = 1
             else:
-                unique[word_position] = unique[word_position] + 1
+                unique[bigram_object] = unique[bigram_object] + 1
 
     export(unique)
 
