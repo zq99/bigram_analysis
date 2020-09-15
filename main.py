@@ -68,7 +68,7 @@ def generate_bigram_analysis():
         word = str(row[1].values[0])
         for n in range(0, len(word) - 1):
             bigram = word[n:n + 2]
-            obj = Bigram(n + 1, bigram)
+            obj = Bigram(bigram, n + 1)
             if obj not in unique:
                 unique[obj] = 1
             else:
