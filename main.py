@@ -38,44 +38,64 @@ def print_results(results):
         print(o.position, o.bigram, results[o])
 
 
-def export(results):
-    # exports the results dictionary into a csv
-    # the keys in the results dictionary are bigram objects
-    # the values in the results dictionary is the number of times that bigram occurs
+def get_percentage(count, total):
+    return round((float(count) / total), 2) if total > 0 else 0
+
+
+def export(bigram_position_frequency, bigram_total):
+    # exports the bigram_position_frequency dictionary into a csv
+    # the keys in the bigram_position_frequency dictionary are bigram objects
+    # the values in the bigram_position_frequency dictionary is the number of times that bigram occurs
     # in that position in a word
 
-    if len(results) == 0:
+    if len(bigram_position_frequency) == 0:
         log.info("nothing to export")
         return
     file_name = "results.csv"
+
     with open(file_name, mode='w', newline='', encoding="utf-8")as f:
         export_writer = csv.writer(f, delimiter=',')
         export_writer.writerow(
-            ["bigram", "position", "frequency"])
+            ["bigram", "position", "frequency", "total", "percentage"])
 
-        for key in results:
-            export_writer.writerow([key.bigram, key.position, results[key]])
+        for key in bigram_position_frequency:
+            export_writer.writerow([key.bigram,
+                                    key.position,
+                                    bigram_position_frequency[key],
+                                    bigram_total[key.bigram],
+                                    get_percentage(bigram_position_frequency[key], bigram_total[key.bigram])
+                                    ])
+    log.info("export complete")
 
 
-def generate_bigram_analysis():
+def generate_bigram_analysis(filename):
     # iterates over all the words in the english word file
     # and extracts the bigrams from each position of the word
 
-    unique = {}
-    words_df = pd.read_csv("english_words.csv")
+    bigram_position_frequency = {}
+    bigram_frequency = {}
+    words_df = pd.read_csv(filename)
 
     for row in words_df.iterrows():
         word = str(row[1].values[0])
         for n in range(0, len(word) - 1):
             bigram = word[n:n + 2]
             obj = Bigram(bigram, n + 1)
-            if obj not in unique:
-                unique[obj] = 1
-            else:
-                unique[obj] = unique[obj] + 1
 
-    export(unique)
+            # tracking by position in word
+            if obj not in bigram_position_frequency:
+                bigram_position_frequency[obj] = 1
+            else:
+                bigram_position_frequency[obj] = bigram_position_frequency[obj] + 1
+
+            # tracking totals across all positions
+            if obj.bigram not in bigram_frequency:
+                bigram_frequency[obj.bigram] = 1
+            else:
+                bigram_frequency[obj.bigram] = bigram_frequency[obj.bigram] + 1
+
+    export(bigram_position_frequency, bigram_frequency)
 
 
 if __name__ == '__main__':
-    generate_bigram_analysis()
+    generate_bigram_analysis("english_words.csv")
