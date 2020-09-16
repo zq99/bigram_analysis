@@ -59,11 +59,12 @@ def export(bigram_position_frequency, bigram_total):
             ["bigram", "position", "frequency", "total", "percentage"])
 
         for key in bigram_position_frequency:
+            percentage = get_percentage(bigram_position_frequency[key], bigram_total[key.bigram])
             export_writer.writerow([key.bigram,
                                     key.position,
                                     bigram_position_frequency[key],
                                     bigram_total[key.bigram],
-                                    get_percentage(bigram_position_frequency[key], bigram_total[key.bigram])
+                                    percentage
                                     ])
     log.info("export complete")
 
