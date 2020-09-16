@@ -42,7 +42,7 @@ def get_percentage(count, total):
     return round((float(count) / total), 2) if total > 0 else 0
 
 
-def export(bigram_position_frequency, bigram_total):
+def export_to_csv(bigram_position_frequency, bigram_total):
     # exports the bigram_position_frequency dictionary into a csv
     # the keys in the bigram_position_frequency dictionary are bigram objects
     # the values in the bigram_position_frequency dictionary is the number of times that bigram occurs
@@ -53,20 +53,23 @@ def export(bigram_position_frequency, bigram_total):
         return
     file_name = "results.csv"
 
-    with open(file_name, mode='w', newline='', encoding="utf-8")as f:
-        export_writer = csv.writer(f, delimiter=',')
-        export_writer.writerow(
-            ["bigram", "position", "frequency", "total", "percentage"])
+    try:
+        with open(file_name, mode='w', newline='', encoding="utf-8")as f:
+            export_writer = csv.writer(f, delimiter=',')
+            export_writer.writerow(
+                ["bigram", "position", "frequency", "total", "percentage"])
 
-        for key in bigram_position_frequency:
-            percentage = get_percentage(bigram_position_frequency[key], bigram_total[key.bigram])
-            export_writer.writerow([key.bigram,
-                                    key.position,
-                                    bigram_position_frequency[key],
-                                    bigram_total[key.bigram],
-                                    percentage
-                                    ])
-    log.info("export complete")
+            for key in bigram_position_frequency:
+                percentage = get_percentage(bigram_position_frequency[key], bigram_total[key.bigram])
+                export_writer.writerow([key.bigram,
+                                        key.position,
+                                        bigram_position_frequency[key],
+                                        bigram_total[key.bigram],
+                                        percentage
+                                        ])
+            log.info("export complete")
+    except PermissionError:
+        log.error("unable to create export file")
 
 
 def generate_bigram_analysis(filename):
@@ -95,7 +98,7 @@ def generate_bigram_analysis(filename):
             else:
                 bigram_frequency[obj.bigram] = bigram_frequency[obj.bigram] + 1
 
-    export(bigram_position_frequency, bigram_frequency)
+    export_to_csv(bigram_position_frequency, bigram_frequency)
 
 
 if __name__ == '__main__':
