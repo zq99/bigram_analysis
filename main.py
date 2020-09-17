@@ -48,8 +48,8 @@ def export_to_csv(bigram_position_frequency, bigram_total):
     # the values in the bigram_position_frequency dictionary is the number of times that bigram occurs
     # in that position in a word
 
-    if len(bigram_position_frequency) == 0:
-        log.info("nothing to export")
+    if len(bigram_position_frequency) == 0 or len(bigram_total) == 0:
+        log.warning("data missing or incomplete - nothing exported")
         return
     file_name = "results.csv"
 
@@ -90,13 +90,13 @@ def generate_bigram_analysis(filename):
             if obj not in bigram_position_frequency:
                 bigram_position_frequency[obj] = 1
             else:
-                bigram_position_frequency[obj] = bigram_position_frequency[obj] + 1
+                bigram_position_frequency[obj] += 1
 
             # tracking totals across all positions
             if obj.bigram not in bigram_frequency:
                 bigram_frequency[obj.bigram] = 1
             else:
-                bigram_frequency[obj.bigram] = bigram_frequency[obj.bigram] + 1
+                bigram_frequency[obj.bigram] += 1
 
     export_to_csv(bigram_position_frequency, bigram_frequency)
 
