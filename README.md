@@ -2,7 +2,7 @@
 
 A Bigram represents two consecutive characters. 
 
-The word "Hello" has 4 Bigrams: "He", "el", "ll", "lo"
+The word "hello" has 4 Bigrams: "he", "el", "ll", "lo".
 
 This code extracts all the bigrams from a list of 9,000 of the most common words in English. 
 
