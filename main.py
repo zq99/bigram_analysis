@@ -59,12 +59,12 @@ def export_to_csv(bigram_position_frequency, bigram_total):
             export_writer.writerow(
                 ["text", "position", "frequency", "total", "percentage"])
 
-            for key in bigram_position_frequency:
-                percentage = get_percentage(bigram_position_frequency[key], bigram_total[key.text])
-                export_writer.writerow([key.text,
-                                        key.position,
-                                        bigram_position_frequency[key],
-                                        bigram_total[key.text],
+            for bigram in bigram_position_frequency:
+                percentage = get_percentage(bigram_position_frequency[bigram], bigram_total[bigram.text])
+                export_writer.writerow([bigram.text,
+                                        bigram.position,
+                                        bigram_position_frequency[bigram],
+                                        bigram_total[bigram.text],
                                         percentage
                                         ])
             log.info("export complete")
