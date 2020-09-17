@@ -87,8 +87,8 @@ def generate_bigram_analysis(filename):
     for row in words_df.iterrows():
         word = str(row[1].values[0])
         for n in range(0, len(word) - 1):
-            text = get_ngram(word,n)
-            bigram = Bigram(text, n + 1)
+
+            bigram = Bigram(get_ngram(word,n), n + 1)
 
             # tracking by position in word
             if bigram not in bigram_position_frequency:
