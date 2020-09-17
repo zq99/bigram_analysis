@@ -72,7 +72,7 @@ def export_to_csv(bigram_position_frequency, bigram_total):
         log.error("unable to create export file")
 
 
-def get_ngram(word, n):
+def get_bigram(word, n):
     return word[n:n + 2]
 
 
@@ -88,7 +88,7 @@ def generate_bigram_analysis(filename):
         word = str(row[1].values[0])
         for n in range(0, len(word) - 1):
 
-            bigram = Bigram(get_ngram(word,n), n + 1)
+            bigram = Bigram(get_bigram(word, n), n + 1)
 
             # tracking by position in word
             if bigram not in bigram_position_frequency:
