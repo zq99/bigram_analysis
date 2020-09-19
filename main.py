@@ -51,9 +51,9 @@ def export_to_csv(bigram_position_frequency, bigram_total):
     if len(bigram_position_frequency) == 0 or len(bigram_total) == 0:
         log.warning("data missing or incomplete - nothing exported")
         return
-    file_name = "results.csv"
 
     try:
+        file_name = "results.csv"
         with open(file_name, mode='w', newline='', encoding="utf-8")as f:
             export_writer = csv.writer(f, delimiter=',')
             export_writer.writerow(
@@ -72,7 +72,7 @@ def export_to_csv(bigram_position_frequency, bigram_total):
         log.error("unable to create export file")
 
 
-def get_bigram(word, n):
+def get_bigram_at_position(word, n):
     return word[n:n + 2]
 
 
@@ -88,7 +88,7 @@ def generate_bigram_analysis(filename):
         word = str(row[1].values[0])
         for n in range(0, len(word) - 1):
 
-            bigram = Bigram(get_bigram(word, n), n + 1)
+            bigram = Bigram(get_bigram_at_position(word, n), n + 1)
 
             # tracking by position in word
             if bigram not in bigram_position_frequency:
